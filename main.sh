@@ -1,0 +1,179 @@
+#!/bin/bash
+
+#add color for text
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+plain='\033[0m'
+NC='\033[0m' # No Color
+
+
+cur_dir=$(pwd)
+# check root
+# [[ $EUID -ne 0 ]] && echo -e "${RED}Fatal error: ${plain} Please run this script with root privilege \n " && exit 1
+
+install_jq() {
+    if ! command -v jq &> /dev/null; then
+        # Check if the system is using apt package manager
+        if command -v apt-get &> /dev/null; then
+            echo -e "${RED}jq is not installed. Installing...${NC}"
+            sleep 1
+            sudo apt-get update
+            sudo apt-get install -y jq
+        else
+            echo -e "${RED}Error: Unsupported package manager. Please install jq manually.${NC}\n"
+            read -p "Press any key to continue..."
+            exit 1
+        fi
+    fi
+}
+
+loader(){
+    
+    gv_menu "| 1  - Transfer DB to another SERVER \n| 2  - Send Gift to All Client \n| 3 - Manage Users  \n| 4 - Cronjob for reset xray  \n| 5 - WhatsApp Time  \n| 0  - Exit"
+    
+    read -p "Enter option number: " choice
+    case $choice in
+        1)
+            install_tunnel
+        ;;
+        2)
+            unistall
+        ;;
+        0)
+            echo -e "${GREEN}Exiting program...${NC}"
+            exit 0
+        ;;
+        *)
+            echo "Not valid"
+        ;;
+    esac
+    
+}
+
+require_command(){
+
+        sudo apt-get install dnsutils -y
+
+
+    install_jq
+
+    if ! command -v pv &> /dev/null
+    then
+        echo "pv could not be found, installing it..."
+        sudo apt update
+        sudo apt install -y pv
+    fi
+
+}
+
+
+gv_menu(){
+    clear
+    
+    # Get server IP
+    SERVER_IP=$(hostname -I | awk '{print $1}')
+    
+    # Fetch server country using ip-api.com
+    SERVER_COUNTRY=$(curl -sS "http://ip-api.com/json/$SERVER_IP" | jq -r '.country')
+    
+    # Fetch server isp using ip-api.com
+    SERVER_ISP=$(curl -sS "http://ip-api.com/json/$SERVER_IP" | jq -r '.isp')
+    
+    XUI_CORE=$(check_xui_exist)
+    
+    echo "+---------------------------------------------------------------------------------------+"
+    echo "|                                                                                       |"
+    echo "| __   __ _    _  _____                               _       _                  _      |"
+    echo "| \ \ / /| |  | ||_   _|            /\               (_)     | |                | |     |"
+    echo "|  \ V / | |  | |  | |   ______    /  \    ___   ___  _  ___ | |_   __ _  _ __  | |_    |"
+    echo "|   > <  | |  | |  | |  |______|  / /\ \  / __| / __|| |/ __|| __| / _  || '_ \ | __|   |"
+    echo "|  / . \ | |__| | _| |_          / ____ \ \__ \ \__ \| |\__ \| |_ | (_| || | | || |_    |"
+    echo "| /_/ \_\ \____/ |_____|        /_/    \_\|___/ |___/|_||___/ \__| \__,_||_| |_| \__|   |"
+    echo "|                                                                                       |"
+    echo "+---------------------------------------------------------------------------------------+"
+    echo -e "|${GREEN}Server Country    |${NC} $SERVER_COUNTRY"
+    echo -e "|${GREEN}Server IP         |${NC} $SERVER_IP"
+    echo -e "|${GREEN}Server ISP        |${NC} $SERVER_ISP"
+    echo -e "|${GREEN}Server XUI        |${NC} $XUI_CORE"
+    echo "+--------------------------------------------------------------------------------------+"
+    echo -e "|${YELLOW}Please choose an option:${NC}"
+    echo "+--------------------------------------------------------------------------------------+"
+    echo -e $1
+    echo "+--------------------------------------------------------------------------------------+"
+    echo -e "\033[0m"
+}
+
+
+
+install_tunnel(){
+    gv_menu "| 1  - Transfer DB to another SERVER \n| 2  - Send Gift to All Client \n| 3- Manage Users  \n| 0  - Exit"
+    
+    read -p "Enter option number: " setup
+    
+    case $setup in
+        1)
+            iran_setup
+        ;;
+        2)
+            kharej_setup
+        ;;
+        0)
+            echo -e "${GREEN}Exiting program...${NC}"
+            exit 0
+        ;;
+        *)
+            echo "Not valid"
+        ;;
+    esac
+    
+}
+
+transfer_db(){
+
+    read -p "Destination SERVER IP   ( Like : 127.0.0.1 ): " dest_ip
+    read -p "Destination SERVER USER ( Like : root) [default: root]: " dest_user
+    read -p "Destination SERVER PORT ( Like : 22 ) [default: 22]: " dest_port
+
+    # استفاده از مقادیر پیشفرض اگر کاربر چیزی وارد نکرد
+    dest_user=${dest_user:-root}
+    dest_port=${dest_port:-22}
+
+    db_file="/etc/x-ui/xui.db"
+
+    # انتقال فایل با نمایش پروسس بار
+    echo "Transferring file..."
+    scp -P "$dest_port" "$db_file" "$dest_user@$dest_ip:/etc/testfolder" | pv -petrafb > /dev/null
+
+    if [ $? -eq 0 ]; then
+        echo "Transfer completed successfully."
+    else
+        echo "Transfer failed."
+    fi
+}
+
+check_xui_exist() {
+    local file_path="/etc/x-ui/x-ui.db"
+    local status
+    
+    if [ -f "$file_path" ]; then
+        status="${GREEN}Installed"${NC}
+    else
+        status=${RED}"Not installed"${NC}
+    fi
+    
+    echo "$status"
+}
+
+
+
+
+unistall(){
+    
+    echo $'\e[32mUninstalling XUi-ASSISTANT in 3 seconds... \e[0m' && sleep 1 && echo $'\e[32m2... \e[0m' && sleep 1 && echo $'\e[32m1... \e[0m' && sleep 1 && {
+        echo 'GVTUNNEL Unistalled :(';
+    }
+    loader
+}
+require_command
+loader
