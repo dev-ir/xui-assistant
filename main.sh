@@ -30,7 +30,7 @@ install_jq() {
 
 loader(){
     
-    menu "| 1  - Transfer DB to another SERVER \n| 2  - Send Gift to All Client \n| 3 - Manage Users  \n| 4 - Cronjob for reset xray  \n| 5 - WhatsApp Time \n| 6 - Install WordPress \n| 7 - Block All SPEEDTEST \n| 0  - Exit"
+    menu "| 1  - Copy DB to Destination VPS \n| 2  - Send Gift to All Client \n| 3 - Manage Users  \n| 4 - Cronjob for reset xray  \n| 5 - WhatsApp Time \n| 6 - Install WordPress \n| 7 - Block All SPEEDTEST \n| 0  - Exit"
     
     read -p "Enter option number: " choice
     case $choice in
