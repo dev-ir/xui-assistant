@@ -36,7 +36,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/dev-ir/xui-assistant/master/ma
 
 ## 🪚 Preview
 <p align="left">
-    <img width="100%" src="https://github.com/user-attachments/assets/34011c98-be2d-416c-a806-29933650e877" alt="Image">
+    <img width="100%" src="https://github.com/user-attachments/assets/cc781ca6-5f3c-45f0-b297-0881a2eadfc7" alt="Image">
 </p>
 
 ## 🙏 Support with Crypto 
