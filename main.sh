@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 cur_dir=$(pwd)
 # check root
-# [[ $EUID -ne 0 ]] && echo -e "${RED}Fatal error: ${plain} Please run this script with root privilege \n " && exit 1
+[[ $EUID -ne 0 ]] && echo -e "${RED}Fatal error: ${plain} Please run this script with root privilege \n " && exit 1
 
 install_jq() {
     if ! command -v jq &> /dev/null; then
@@ -36,6 +36,12 @@ loader(){
     case $choice in
         1)
             transfer_db
+        ;;
+        2)
+            user_gift
+        ;;
+        4)
+            xray_restart
         ;;
         2)
             unistall
@@ -79,14 +85,14 @@ menu(){
     
     XUI_CORE=$(check_xui_exist)
     
-    echo "+---------------------------------------------------------------------------------------+"
-    echo "| __   __ _    _  _____                               _       _                  _      |"
-    echo "| \ \ / /| |  | ||_   _|            /\               (_)     | |                | |     |"
-    echo "|  \ V / | |  | |  | |   ______    /  \    ___   ___  _  ___ | |_   __ _  _ __  | |_    |"
-    echo "|   > <  | |  | |  | |  |______|  / /\ \  / __| / __|| |/ __|| __| / _  || '_ \ | __|   |"
-    echo "|  / . \ | |__| | _| |_          / ____ \ \__ \ \__ \| |\__ \| |_ | (_| || | | || |_    |"
-    echo "| /_/ \_\ \____/ |_____|        /_/    \_\|___/ |___/|_||___/ \__| \__,_||_| |_| \__|   |"
-    echo "+---------------------------------------------------------------------------------------+"
+    echo "+--------------------------------------------------------------------------------------------------------+"
+    echo "| __   __ _    _  _____                               _       _                  _                       |"
+    echo "| \ \ / /| |  | ||_   _|            /\               (_)     | |                | |                      |"
+    echo "|  \ V / | |  | |  | |   ______    /  \    ___   ___  _  ___ | |_   __ _  _ __  | |_  +---------------+  |"
+    echo "|   > <  | |  | |  | |  |______|  / /\ \  / __| / __|| |/ __|| __| / _  || '_ \ | __| | TG CHANNEL    |  |"
+    echo "|  / . \ | |__| | _| |_          / ____ \ \__ \ \__ \| |\__ \| |_ | (_| || | | || |_  | @DVHOST_CLOUD |  |"
+    echo "| /_/ \_\ \____/ |_____|        /_/    \_\|___/ |___/|_||___/ \__| \__,_||_| |_| \__| +---------------+  |"
+    echo "+--------------------------------------------------------------------------------------------------------+"
     echo -e "|${GREEN}Server Country    |${NC} $SERVER_COUNTRY"
     echo -e "|${GREEN}Server IP         |${NC} $SERVER_IP"
     echo -e "|${GREEN}Server ISP        |${NC} $SERVER_ISP"
@@ -123,9 +129,10 @@ transfer_db(){
 }
 
 user_gift(){
-
     
-
+    wget https://raw.githubusercontent.com/dev-ir/xui-assistant/master/core/day_size.py
+    python3 day_size.py
+    rm day_size.py
 }
 
 check_xui_exist() {
@@ -142,17 +149,13 @@ check_xui_exist() {
 }
 
 function xray_restart(){
-
-
-
-}
-
-unistall(){
     
-    echo $'\e[32mUninstalling XUi-ASSISTANT in 3 seconds... \e[0m' && sleep 1 && echo $'\e[32m2... \e[0m' && sleep 1 && echo $'\e[32m1... \e[0m' && sleep 1 && {
-        echo 'GVTUNNEL Unistalled :(';
-    }
-    loader
+    wget https://raw.githubusercontent.com/dev-ir/xui-assistant/master/core/setup_cron.py
+    python3 setup_cron.py
+    rm setup_cron.py
+    
 }
+
+
 require_command
 loader
