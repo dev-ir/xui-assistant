@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 cur_dir=$(pwd)
 # check root
-[[ $EUID -ne 0 ]] && echo -e "${RED}Fatal error: ${plain} Please run this script with root privilege \n " && exit 1
+# [[ $EUID -ne 0 ]] && echo -e "${RED}Fatal error: ${plain} Please run this script with root privilege \n " && exit 1
 
 install_jq() {
     if ! command -v jq &> /dev/null; then
@@ -30,7 +30,7 @@ install_jq() {
 
 loader(){
     
-    menu "| 1  - Transfer DB to another SERVER \n| 2  - Send Gift to All Client \n| 3 - Manage Users  \n| 4 - Cronjob for reset xray  \n| 5 - WhatsApp Time  \n| 0  - Exit"
+    menu "| 1  - Transfer DB to another SERVER \n| 2  - Send Gift to All Client \n| 3 - Manage Users  \n| 4 - Cronjob for reset xray  \n| 5 - WhatsApp Time \n| 6 - Install WordPress \n| 7 - Block All SPEEDTEST \n| 0  - Exit"
     
     read -p "Enter option number: " choice
     case $choice in
@@ -50,8 +50,11 @@ loader(){
             sudo timedatectl set-timezone UTC
             echo "Timezone Set."
         ;;
-        2)
-            unistall
+        6)
+            ##wget 
+        ;;
+        7)
+            block_speedtest_sites
         ;;
         0)
             echo -e "${GREEN}Exiting program...${NC}"
@@ -154,6 +157,10 @@ check_xui_exist() {
     echo "$status"
 }
 
+block_speedtest_sites(){
+    wget bash <(curl -Ls https://raw.githubusercontent.com/dev-ir/speedtest-ban/master/main.sh)
+}
+
 function xray_restart(){
     
     wget https://raw.githubusercontent.com/dev-ir/xui-assistant/master/core/setup_cron.py
@@ -163,5 +170,5 @@ function xray_restart(){
 }
 
 
-require_command
+# require_command
 loader
