@@ -10,7 +10,7 @@ NC='\033[0m' # No Color
 
 cur_dir=$(pwd)
 # check root
-# [[ $EUID -ne 0 ]] && echo -e "${RED}Fatal error: ${plain} Please run this script with root privilege \n " && exit 1
+[[ $EUID -ne 0 ]] && echo -e "${RED}Fatal error: ${plain} Please run this script with root privilege \n " && exit 1
 
 install_jq() {
     if ! command -v jq &> /dev/null; then
@@ -68,7 +68,7 @@ require_command(){
     
     apt update -y && apt upgrade -y
     sudo apt-get install dnsutils -y
-    # install_jq
+    install_jq
     if ! command -v pv &> /dev/null
     then
         echo "pv could not be found, installing it..."
