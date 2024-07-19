@@ -30,12 +30,12 @@ install_jq() {
 
 loader(){
     
-    gv_menu "| 1  - Transfer DB to another SERVER \n| 2  - Send Gift to All Client \n| 3 - Manage Users  \n| 4 - Cronjob for reset xray  \n| 5 - WhatsApp Time  \n| 0  - Exit"
+    menu "| 1  - Transfer DB to another SERVER \n| 2  - Send Gift to All Client \n| 3 - Manage Users  \n| 4 - Cronjob for reset xray  \n| 5 - WhatsApp Time  \n| 0  - Exit"
     
     read -p "Enter option number: " choice
     case $choice in
         1)
-            install_tunnel
+            transfer_db
         ;;
         2)
             unistall
@@ -52,23 +52,20 @@ loader(){
 }
 
 require_command(){
-
-        sudo apt-get install dnsutils -y
-
-
+    
+    apt update -y && apt upgrade -y
+    sudo apt-get install dnsutils -y
     install_jq
-
     if ! command -v pv &> /dev/null
     then
         echo "pv could not be found, installing it..."
         sudo apt update
         sudo apt install -y pv
     fi
-
 }
 
 
-gv_menu(){
+menu(){
     clear
     
     # Get server IP
@@ -83,14 +80,12 @@ gv_menu(){
     XUI_CORE=$(check_xui_exist)
     
     echo "+---------------------------------------------------------------------------------------+"
-    echo "|                                                                                       |"
     echo "| __   __ _    _  _____                               _       _                  _      |"
     echo "| \ \ / /| |  | ||_   _|            /\               (_)     | |                | |     |"
     echo "|  \ V / | |  | |  | |   ______    /  \    ___   ___  _  ___ | |_   __ _  _ __  | |_    |"
     echo "|   > <  | |  | |  | |  |______|  / /\ \  / __| / __|| |/ __|| __| / _  || '_ \ | __|   |"
     echo "|  / . \ | |__| | _| |_          / ____ \ \__ \ \__ \| |\__ \| |_ | (_| || | | || |_    |"
     echo "| /_/ \_\ \____/ |_____|        /_/    \_\|___/ |___/|_||___/ \__| \__,_||_| |_| \__|   |"
-    echo "|                                                                                       |"
     echo "+---------------------------------------------------------------------------------------+"
     echo -e "|${GREEN}Server Country    |${NC} $SERVER_COUNTRY"
     echo -e "|${GREEN}Server IP         |${NC} $SERVER_IP"
@@ -104,52 +99,33 @@ gv_menu(){
     echo -e "\033[0m"
 }
 
-
-
-install_tunnel(){
-    gv_menu "| 1  - Transfer DB to another SERVER \n| 2  - Send Gift to All Client \n| 3- Manage Users  \n| 0  - Exit"
-    
-    read -p "Enter option number: " setup
-    
-    case $setup in
-        1)
-            iran_setup
-        ;;
-        2)
-            kharej_setup
-        ;;
-        0)
-            echo -e "${GREEN}Exiting program...${NC}"
-            exit 0
-        ;;
-        *)
-            echo "Not valid"
-        ;;
-    esac
-    
-}
-
 transfer_db(){
-
+    
     read -p "Destination SERVER IP   ( Like : 127.0.0.1 ): " dest_ip
     read -p "Destination SERVER USER ( Like : root) [default: root]: " dest_user
     read -p "Destination SERVER PORT ( Like : 22 ) [default: 22]: " dest_port
-
-    # استفاده از مقادیر پیشفرض اگر کاربر چیزی وارد نکرد
+    
     dest_user=${dest_user:-root}
     dest_port=${dest_port:-22}
-
-    db_file="/etc/x-ui/xui.db"
-
-    # انتقال فایل با نمایش پروسس بار
+    
+    db_file="/etc/x-ui/x-ui.db"
+    
     echo "Transferring file..."
-    scp -P "$dest_port" "$db_file" "$dest_user@$dest_ip:/etc/testfolder" | pv -petrafb > /dev/null
-
+    scp -P "$dest_port" "$db_file" "$dest_user@$dest_ip:/etc/testfolder"
+    
     if [ $? -eq 0 ]; then
-        echo "Transfer completed successfully."
+        echo $'\e[32m Transfer completed successfully , Return to Menu in 3 seconds... \e[0m' && sleep 1 && echo $'\e[32m2... \e[0m' && sleep 1 && echo $'\e[32m1... \e[0m' && sleep 1 && {
+            menu
+        }
     else
         echo "Transfer failed."
     fi
+}
+
+user_gift(){
+
+    
+
 }
 
 check_xui_exist() {
@@ -165,8 +141,11 @@ check_xui_exist() {
     echo "$status"
 }
 
+function xray_restart(){
 
 
+
+}
 
 unistall(){
     
