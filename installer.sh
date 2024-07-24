@@ -1,3 +1,6 @@
+#Remove Old version
+rm -rf /root/xui-assistant/
+
 # install git 
 sudo apt install git -y
 
