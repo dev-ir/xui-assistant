@@ -81,7 +81,7 @@ manage_users(){
             python3 "/root/xui-assistant/core/users/add_user.py"
         ;;
         2)
-            python3 "/root/xui-assistant/core/users/delete.py"
+            python3 "/root/xui-assistant/core/users/delete_user.py"
         ;;
         3)
             python3 "/root/xui-assistant/core/users/password_user.py"
