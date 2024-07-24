@@ -72,31 +72,7 @@ loader(){
 }
 
 manage_users(){
-    
-    menu "| 1  - Add User \n| 2  - Delete User \n| 3 - Change Password For User  \n| 4 - List Users  \n| 0  - Exit"
-    read -p "|Enter option number: " choice
-    
-    case $choice in
-        1)
-            python3 "/root/xui-assistant/core/users/add_user.py"
-        ;;
-        2)
-            python3 "/root/xui-assistant/core/users/delete_user.py"
-        ;;
-        3)
-            python3 "/root/xui-assistant/core/users/password_user.py"
-        ;;
-        4)
-            python3 "/root/xui-assistant/core/users/list_users.py"
-        ;;
-        0)
-            echo -e "${GREEN}Exiting program...${NC}"
-            exit 0
-        ;;
-        *)
-            echo "Not valid"
-        ;;
-    esac
+    python3 /core/user_manager.py
 }
 
 require_command(){
