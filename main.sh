@@ -32,16 +32,16 @@ loader(){
     
     menu "| 1  - Copy DB to Destination VPS \n| 2  - Send Gift to All Client \n| 3 - Manage Users  \n| 4 - Cronjob for reset xray  \n| 5 - WhatsApp Time \n| 6 - Install WordPress \n| 7 - Block All SPEEDTEST \n| 0  - Exit"
     
-    read -p "Enter option number: " choice
+    read -p "|Enter option number: " choice
     case $choice in
         1)
             transfer_db
         ;;
         2)
-            user_gift
+            #user_gift
         ;;
         3)
-            
+            manage_users
         ;;
         4)
             xray_restart
@@ -51,7 +51,7 @@ loader(){
             echo "Timezone Set."
         ;;
         6)
-            ##wget 
+            bash <(curl -Ls https://raw.githubusercontent.com/dev-ir/WordPress-Installer/master/main.sh)
         ;;
         7)
             block_speedtest_sites
@@ -65,6 +65,34 @@ loader(){
         ;;
     esac
     
+}
+
+manage_users(){
+    
+    menu "| 1  - Add User \n| 2  - Delete User \n| 3 - Change Password For User  \n| 4 - List Users  \n| 0  - Exit"
+    read -p "|Enter option number: " choice
+    
+    case $choice in
+        1)
+            python3 "users/add_user.py"
+        ;;
+        2)
+            python3 "users/delete.py"
+        ;;
+        3)
+            python3 "users/password_user.py"
+        ;;
+        4)
+            python3 "users/list_users.py"
+        ;;
+        0)
+            echo -e "${GREEN}Exiting program...${NC}"
+            exit 0
+        ;;
+        *)
+            echo "Not valid"
+        ;;
+    esac
 }
 
 require_command(){
@@ -111,7 +139,6 @@ menu(){
     echo "+-------------------------------------------------------------------------------------------------+"
     echo -e $1
     echo "+-------------------------------------------------------------------------------------------------+"
-    echo -e "\033[0m"
 }
 
 transfer_db(){
@@ -170,5 +197,5 @@ function xray_restart(){
 }
 
 
-# require_command
+require_command
 loader
