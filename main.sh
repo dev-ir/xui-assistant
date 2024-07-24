@@ -72,6 +72,7 @@ loader(){
 }
 
 manage_users(){
+    cd /root/xui-assistant/
     python3 /core/user_manager.py
 }
 
