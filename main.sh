@@ -30,7 +30,7 @@ install_jq() {
 
 loader(){
     
-    menu "| 1  - Copy DB to Destination VPS \n| 2  - Send Gift to All Client \n| 3 - Manage Users  \n| 4 - Cronjob for reset xray  \n| 5 - WhatsApp Time \n| 6 - Install WordPress \n| 7 - Block All SPEEDTEST \n| 0  - Exit"
+    menu "| 1  - Copy DB to Destination VPS \n| 2  - Send Gift to All Client \n| 3 - Manage Users  \n| 4 - Cronjob for reset xray  \n| 5 - WhatsApp Time \n| 6 - Install WordPress \n| 7 - Block All SPEEDTEST \n| 8 - Unistall \n| 0  - Exit"
     
     read -p "|Enter option number: " choice
     case $choice in
@@ -55,6 +55,9 @@ loader(){
         ;;
         7)
             block_speedtest_sites
+        ;;
+        8)
+            unistall
         ;;
         0)
             echo -e "${GREEN}Exiting program...${NC}"
@@ -194,6 +197,19 @@ function xray_restart(){
     python3 setup_cron.py
     rm setup_cron.py
     
+}
+
+
+unistall(){
+
+    echo $'\e[32mUninstalling XUI-ASSISTANT in 3 seconds... \e[0m' && sleep 1 && echo $'\e[32m2... \e[0m' && sleep 1 && echo $'\e[32m1... \e[0m' && sleep 1 && {
+    rm -rf /root/xui-assistant/
+    clear
+    echo 'XUI-ASSISTANT Unistalled :(';
+    }
+
+
+    loader
 }
 
 
