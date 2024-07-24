@@ -9,6 +9,7 @@ git clone https://github.com/dev-ir/xui-assistant.git /root/xui-assistant/
 
 # Access Folder
 sudo chmod +x /root/xui-assistant/
+chmod +x /root/xui-assistant/main.sh
 
 # Change Directory
 cd /root/xui-assistant/
