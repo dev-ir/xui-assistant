@@ -77,16 +77,16 @@ manage_users(){
     
     case $choice in
         1)
-            python3 "users/add_user.py"
+            python3 "/root/xui-assistant/users/add_user.py"
         ;;
         2)
-            python3 "users/delete.py"
+            python3 "/root/xui-assistant/users/delete.py"
         ;;
         3)
-            python3 "users/password_user.py"
+            python3 "/root/xui-assistant/users/password_user.py"
         ;;
         4)
-            python3 "users/list_users.py"
+            python3 "/root/xui-assistant/users/list_users.py"
         ;;
         0)
             echo -e "${GREEN}Exiting program...${NC}"
