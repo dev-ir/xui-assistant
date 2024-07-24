@@ -6,7 +6,7 @@
 ## Install & Upgrade
 
 ```
-bash <(curl -Ls https://raw.githubusercontent.com/dev-ir/xui-assistant/master/main.sh)
+bash <(curl -Ls https://raw.githubusercontent.com/dev-ir/xui-assistant/master/installer.sh)
 ```
 **Comprehensive User Management:**
 
