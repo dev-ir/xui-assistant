@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import subprocess
 
 db_path = '/etc/x-ui/x-ui.db'
 
@@ -129,6 +130,7 @@ def main():
         elif choice == '3':
             dvhost_change_password()
         elif choice == '4':
+            subprocess.run(['/root/xui-assistant/main.sh'], check=True)
             break
         else:
             print("Invalid choice, please try again.")
