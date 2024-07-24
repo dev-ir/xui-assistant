@@ -89,7 +89,7 @@ def main():
     check_and_install_cron()
     while True:
         print("\nMenu:")
-        print("1- Set Cronjob")
+        print("1- Set Cronjob Restart X-UI")
         print("2- Delete Cronjob")
         print("3- Exit")
         
