@@ -26,10 +26,10 @@ def dvhost_update_expiry_time(days):
         cursor.execute("SELECT id, expiry_time, total FROM client_traffics")
         client_traffics = cursor.fetchall()
         for client_id, expiry_time, total in client_traffics:
-            if expiry_time >= 0:
+            if expiry_time > 0:
                 new_expiry_time = expiry_time + additional_time_millis
                 cursor.execute("UPDATE client_traffics SET expiry_time = ? WHERE id = ?", (new_expiry_time, client_id))
-            if total >= 0:
+            if total > 0:
                 new_total = total + (10 * 1024 * 1024 * 1024) 
                 cursor.execute("UPDATE client_traffics SET total = ? WHERE id = ?", (new_total, client_id))
         
@@ -40,8 +40,9 @@ def dvhost_update_expiry_time(days):
             settings = json.loads(settings_json)
             if 'clients' in settings:
                 for client in settings['clients']:
-                    if client['enable'] and client['expiryTime'] >= 0:
+                    if client['enable'] and client['expiryTime'] > 0:
                         client['expiryTime'] += additional_time_millis
+                    if client['totalGB'] > 0:
                         client['totalGB'] = max(client['totalGB'], 0) + 10 * 1024 * 1024 * 1024
 
                 new_settings_json = json.dumps(settings)
@@ -71,7 +72,7 @@ def dvhost_update_traffic():
         cursor.execute("SELECT id, total FROM client_traffics")
         client_traffics = cursor.fetchall()
         for client_id, total in client_traffics:
-            if total >= 0:
+            if total > 0:
                 new_total = total + additional_bytes
                 cursor.execute("UPDATE client_traffics SET total = ? WHERE id = ?", (new_total, client_id))
 
@@ -83,7 +84,7 @@ def dvhost_update_traffic():
             settings = json.loads(settings_json)
             if 'clients' in settings:
                 for client in settings['clients']:
-                    if client['enable'] and client['totalGB'] >= 0:
+                    if client['enable'] and client['totalGB'] > 0:
                         client['totalGB'] += additional_bytes
 
                 new_settings_json = json.dumps(settings)
