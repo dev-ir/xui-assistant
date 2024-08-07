@@ -38,8 +38,7 @@ loader(){
             transfer_db
         ;;
         2)
-            echo 'Very soon'
-            #user_gift
+            gift_user
         ;;
         3)
             manage_users
@@ -69,6 +68,11 @@ loader(){
         ;;
     esac
     
+}
+
+gift_user(){
+    wget https://raw.githubusercontent.com/dev-ir/xui-assistant/master/core/day_size.py
+    python3 day_size.py
 }
 
 manage_users(){
