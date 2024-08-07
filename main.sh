@@ -71,8 +71,7 @@ loader(){
 }
 
 gift_user(){
-    wget https://raw.githubusercontent.com/dev-ir/xui-assistant/master/core/day_size.py
-    python3 day_size.py
+    python3 core/day_size.py
 }
 
 manage_users(){
