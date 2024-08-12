@@ -38,9 +38,6 @@ def dvhost_update_expiry_time(days):
                 for client in settings['clients']:
                     if client['enable'] and client['expiryTime'] > 0:
                         client['expiryTime'] += additional_time_millis
-                    if client['totalGB'] > 0:
-                        client['totalGB'] = max(client['totalGB'], 0) + 10 * 1024 * 1024 * 1024
-
                 new_settings_json = json.dumps(settings)
                 cursor.execute("UPDATE inbounds SET settings = ? WHERE id = ?", (new_settings_json, inbound_id))
 
