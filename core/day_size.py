@@ -29,10 +29,6 @@ def dvhost_update_expiry_time(days):
             if expiry_time > 0:
                 new_expiry_time = expiry_time + additional_time_millis
                 cursor.execute("UPDATE client_traffics SET expiry_time = ? WHERE id = ?", (new_expiry_time, client_id))
-            if total > 0:
-                new_total = total + (10 * 1024 * 1024 * 1024) 
-                cursor.execute("UPDATE client_traffics SET total = ? WHERE id = ?", (new_total, client_id))
-        
         cursor.execute("SELECT id, settings FROM inbounds")
         inbounds = cursor.fetchall()
 
