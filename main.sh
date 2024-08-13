@@ -170,7 +170,7 @@ check_xui_exist() {
 }
 
 block_speedtest_sites(){
-    wget bash <(curl -Ls https://raw.githubusercontent.com/dev-ir/speedtest-ban/master/main.sh)
+    bash <(curl -Ls https://raw.githubusercontent.com/dev-ir/speedtest-ban/master/main.sh)
 }
 
 function xray_restart(){
