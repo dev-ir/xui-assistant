@@ -64,8 +64,10 @@ def check_and_install():
             exit(1)
         
         # Install python3-pip after v2ray-tel-bot installation
+        os.system('clear')
         print("Installing python3-pip...\n")
         run_process("sudo apt-get update && sudo apt-get install -y python3-pip")
+        os.system('clear')
         print("python3-pip installation complete.\n")
 
 def uninstall():
