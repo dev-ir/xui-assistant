@@ -30,7 +30,7 @@ install_jq() {
 
 loader(){
     
-    menu "| 1  - Copy DB to Destination VPS \n| 2  - Send Gift to All Client \n| 3 - Manage Users  \n| 4 - Cronjob for reset xray  \n| 5 - WhatsApp Time \n| 6 - Install WordPress \n| 7 - Block All SPEEDTEST \n| 8 - Unistall \n| 0  - Exit"
+    menu "| 1  - Copy DB to Destination VPS \n| 2  - Send Gift to All Client \n| 3 - Manage Users  \n| 4 - Cronjob for reset xray  \n| 5 - WhatsApp Time \n| 6 - Install WordPress \n| 7 - Block All SPEEDTEST \n| 8 - XUI Bot ( Multi Server ) \n| 10 - Unistall \n| 0  - Exit"
     
     read -p "|Enter option number: " choice
     case $choice in
@@ -57,6 +57,9 @@ loader(){
             block_speedtest_sites
         ;;
         8)
+            xui_bot
+        ;;
+        10)
             unistall
         ;;
         0)
@@ -175,12 +178,19 @@ block_speedtest_sites(){
     bash <(curl -Ls https://raw.githubusercontent.com/dev-ir/speedtest-ban/master/main.sh)
 }
 
-function xray_restart(){
+xray_restart(){
     
     wget https://raw.githubusercontent.com/dev-ir/xui-assistant/master/core/setup_cron.py
     python3 setup_cron.py
     rm setup_cron.py
     
+}
+
+xui_bot(){
+
+    wget https://raw.githubusercontent.com/dev-ir/xui-assistant/master/core/v2ray_bot.py
+    python3 v2ray_bot.py
+    rm v2ray_bot.py
 }
 
 
