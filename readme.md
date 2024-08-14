@@ -27,6 +27,9 @@ bash <(curl -Ls https://raw.githubusercontent.com/dev-ir/xui-assistant/master/in
 * **Restart the Xray service** for troubleshooting and resolving issues
 * **Perform data backups** to protect your information
 
+**Powerful Bot Management:**
+
+
 **And much more!**
 
 
