@@ -114,6 +114,8 @@ menu(){
     echo "|  / . \ | |__| | _| |_        / ____ \ \__ \ \__ \| |\__ \| |_ | (_| || | | || |_  @DVHOST_CLOUD |"
     echo "| /_/ \_\ \____/ |_____|      /_/    \_\|___/ |___/|_||___/ \__| \__,_||_| |_| \__|               |"
     echo "+-------------------------------------------------------------------------------------------------+"
+    echo -e "|Telegram Channel : ${GREEN}@DVHOST_CLOUD ${NC}    |  YouTube : ${RED}youtube.com/@dvhost_cloud${NC}  |"
+    echo "+-------------------------------------------------------------------------------------------------+"
     echo -e "|${GREEN}Server Country    |${NC} $SERVER_COUNTRY"
     echo -e "|${GREEN}Server IP         |${NC} $SERVER_IP"
     echo -e "|${GREEN}Server ISP        |${NC} $SERVER_ISP"
