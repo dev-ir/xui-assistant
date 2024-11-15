@@ -9,10 +9,7 @@ git clone https://github.com/dev-ir/xui-assistant.git /root/xui-assistant/
 
 # Access Folder
 sudo chmod +x /root/xui-assistant/
-chmod +x /root/xui-assistant/main.sh
+chmod +x /root/xui-assistant/menu.sh
 
-# Change Directory
-cd /root/xui-assistant/
 
-# Run Script
-sudo bash main.sh
+sudo mv /root/xui-assistant/menu.sh /usr/local/bin/xui-assis
