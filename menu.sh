@@ -82,6 +82,19 @@ require_command() {
     fi
 }
 
+check_xui_exist() {
+    local file_path="/etc/x-ui/x-ui.db"
+    local status
+    
+    if [ -f "$file_path" ]; then
+        status="${GREEN}Installed"${NC}
+    else
+        status=${RED}"Not installed"${NC}
+    fi
+    
+    echo "$status"
+}
+
 transfer_db() {
     local db_file="/etc/x-ui/x-ui.db"
 
