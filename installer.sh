@@ -14,4 +14,6 @@ chmod +x /root/xui-assistant/menu.sh
 
 sudo mv /root/xui-assistant/menu.sh /usr/local/bin/xui-assis
 
-xui-assis
+echo "You can now access the menu permanently by using the command `xui-assis`."
+
+# xui-assis

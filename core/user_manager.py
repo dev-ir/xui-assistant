@@ -130,8 +130,7 @@ def main():
         elif choice == '3':
             dvhost_change_password()
         elif choice == '4':
-            # subprocess.run(['/root/xui-assistant/main.sh'], check=True)
-            subprocess.run(['bash', '-c', 'curl -Ls https://raw.githubusercontent.com/dev-ir/xui-assistant/master/main.sh | bash'], check=True)
+            subprocess.run(['bash', '-c', 'curl -Ls https://raw.githubusercontent.com/dev-ir/xui-assistant/master/install.sh | bash'], check=True)
             break
         else:
             print("Invalid choice, please try again.")

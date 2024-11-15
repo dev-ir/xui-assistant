@@ -58,7 +58,7 @@ gift_user() {
 }
 
 manage_users() {
-    python3 /root/xui-assistant/core/user_manager.py
+    python3 /root/xui-assistant/core/user_managment.py
 }
 
 require_command() {
@@ -141,6 +141,7 @@ xui_bot() {
 uninstall() {
     echo -e "${GREEN}Uninstalling XUI-ASSISTANT...${NC}"
     rm -rf /root/xui-assistant/
+    rm -rf /usr/local/bin/xui-assis
     echo -e "${RED}XUI-ASSISTANT Uninstalled.${NC}"
 }
 
