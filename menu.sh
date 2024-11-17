@@ -129,12 +129,12 @@ block_speedtest_sites() {
 }
 
 xray_restart() {
-    wget -q https://raw.githubusercontent.com/dev-ir/xui-assistant/master/xui-assistant/core/setup_cron.py
+    wget -q /root/xui-assistant/core/setup_cron.py
     python3 setup_cron.py && rm setup_cron.py
 }
 
 xui_bot() {
-    wget -q https://raw.githubusercontent.com/dev-ir/xui-assistant/master/xui-assistant/core/v2ray_bot.py
+    wget -q /root/xui-assistant/core/v2ray_bot.py
     python3 v2ray_bot.py && rm v2ray_bot.py
 }
 
