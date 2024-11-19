@@ -6,7 +6,7 @@ YELLOW='\033[0;33m'
 NC='\033[0m' # No Color
 
 
-[[ $EUID -ne 0 ]] && echo -e "${RED}Fatal error: ${RED} Please run this script with root privilege ${NC}  \n " && exit 1
+# [[ $EUID -ne 0 ]] && echo -e "${RED}Fatal error: ${RED} Please run this script with root privilege ${NC}  \n " && exit 1
 
 XUI_ASSISTANT_MENU(){
     clear
@@ -61,27 +61,6 @@ manage_users() {
     python3 /root/xui-assistant/core/user_managment.py
 }
 
-require_command() {
-    local repo_url="https://github.com/dev-ir/xui-assistant.git"
-    local install_dir="/root/xui-assistant"
-
-    if [ ! -d "$install_dir" ]; then
-        echo "Directory $install_dir does not exist. Installing..."
-
-        # Check if git is installed
-        if ! command -v git &>/dev/null; then
-            echo "Git is not installed. Installing git..."
-            apt update && apt install -y git
-        fi
-
-        # Clone the repository
-        echo "Cloning repository..."
-        git clone "$repo_url" "$install_dir"
-    else
-        echo "Directory $install_dir already exists."
-    fi
-}
-
 check_xui_exist() {
     local file_path="/etc/x-ui/x-ui.db"
     local status
@@ -96,23 +75,7 @@ check_xui_exist() {
 }
 
 transfer_db() {
-    local db_file="/etc/x-ui/x-ui.db"
-
-    read -p "Destination SERVER IP (e.g., 127.0.0.1): " dest_ip
-    read -p "Destination SERVER USER (e.g., root) [default: root]: " dest_user
-    read -p "Destination SERVER PORT (e.g., 22) [default: 22]: " dest_port
-
-    dest_user=${dest_user:-root}
-    dest_port=${dest_port:-22}
-
-    echo "Transferring database..."
-    scp -P "$dest_port" "$db_file" "$dest_user@$dest_ip:/etc/testfolder"
-
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}Transfer completed successfully.${NC}"
-    else
-        echo -e "${RED}Transfer failed.${NC}"
-    fi
+    bash  /root/xui-assistant/core/database_transfer.sh
 }
 
 fix_timezone() {
@@ -148,6 +111,4 @@ exit_program() {
     exit 0
 }
 
-# Ensure required commands and run loader
-require_command
 loader
