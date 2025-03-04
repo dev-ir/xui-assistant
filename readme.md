@@ -39,7 +39,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/dev-ir/xui-assistant/master/in
 
 ## 🪚 Preview
 <p align="left">
-    <img width="100%" src="https://github.com/user-attachments/assets/cc781ca6-5f3c-45f0-b297-0881a2eadfc7" alt="Image">
+    <img width="100%" src="https://github.com/user-attachments/assets/f33ece63-c97c-40cb-9c6a-39265ef73ec5" alt="Image">
 </p>
 
 ## 🙏 Support with Crypto 
