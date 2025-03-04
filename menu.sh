@@ -13,28 +13,28 @@ XUI_ASSISTANT_MENU(){
 
     XUI_CORE=$(check_xui_exist)
     
-    echo '+--------------------------------------------------------------------------------------------------------------------------------------+'
-	echo '| Y88b   d88P 888     888 8888888            d8888  .d8888b.   .d8888b. 8888888 .d8888b. 88888888888     d8888 888b    888 88888888888 |'
-	echo '|  Y88b d88P  888     888   888             d88888 d88P  Y88b d88P  Y88b  888  d88P  Y88b    888        d88888 8888b   888     888     |'
-	echo '|   Y88o88P   888     888   888            d88P888 Y88b.      Y88b.       888  Y88b.         888       d88P888 88888b  888     888     |'
-	echo '|    Y888P    888     888   888           d88P 888  "Y888b.    "Y888b.    888   "Y888b.      888      d88P 888 888Y88b 888     888     |'
-	echo '|    d888b    888     888   888          d88P  888     "Y88b.     "Y88b.  888      "Y88b.    888     d88P  888 888 Y88b888     888     |'
-	echo '|   d88888b   888     888   888  888888 d88P   888       "888       "888  888        "888    888    d88P   888 888  Y88888     888     |'
-	echo '|  d88P Y88b  Y88b. .d88P   888        d8888888888 Y88b  d88P Y88b  d88P  888  Y88b  d88P    888   d8888888888 888   Y8888     888     |'
-	echo '| d88P   Y88b  "Y88888P"  8888888     d88P     888  "Y8888P"   "Y8888P" 8888888 "Y8888P"     888  d88P     888 888    Y888     888     |'
-    echo '+--------------------------------------------------------------------------------------------------------------------------------------+'
-    echo -e "|  Telegram Channel : ${YELLOW}@DVHOST_CLOUD ${NC} |  YouTube : ${RED}youtube.com/@dvhost_cloud${NC}   |  Version : ${GREEN} 2.0${NC} "
-    echo '+--------------------------------------------------------------------------------------------------------------------------------------+'
+    echo '+-----------------------------------------------------------------------------------------+'
+	echo '| Y88b   d88P 888     888 8888888            d8888  .d8888b.   .d8888b. 8888888 .d8888b.  |'
+	echo '|  Y88b d88P  888     888   888             d88888 d88P  Y88b d88P  Y88b  888  d88P  Y88b |'
+	echo '|   Y88o88P   888     888   888            d88P888 Y88b.      Y88b.       888  Y88b.      |'
+	echo '|    Y888P    888     888   888           d88P 888  "Y888b.    "Y888b.    888   "Y888b.   |'
+	echo '|    d888b    888     888   888          d88P  888     "Y88b.     "Y88b.  888      "Y88b. |'
+	echo '|   d88888b   888     888   888  888888 d88P   888       "888       "888  888        "888 |'
+	echo '|  d88P Y88b  Y88b. .d88P   888        d8888888888 Y88b  d88P Y88b  d88P  888  Y88b  d88P |'
+	echo '| d88P   Y88b  "Y88888P"  8888888     d88P     888  "Y8888P"   "Y8888P" 8888888 "Y8888P"  |'
+    echo '+-----------------------------------------------------------------------------------------+'
+    echo -e "| Telegram Channel : ${YELLOW}@DVHOST_CLOUD ${NC} | YouTube : ${RED}@dvhost_cloud${NC}|    Version : ${GREEN} 2.3${NC} "
+    echo '+-----------------------------------------------------------------------------------------+'
     echo -e "|${YELLOW}Please choose an option:${NC}"
-    echo '+--------------------------------------------------------------------------------------------------------------------------------------+'
+    echo '+-----------------------------------------------------------------------------------------+'
     echo -e $1
-    echo '+--------------------------------------------------------------------------------------------------------------------------------------+'
+    echo '+-----------------------------------------------------------------------------------------+'
     echo -e "\033[0m"
 }
 
 # Main menu function
 loader() {
-    XUI_ASSISTANT_MENU "| 1 - Copy Database to Destination VPS\n| 2 - Send Gift to All Clients\n| 3 - User Management\n| 4 - Set Cronjob for Resetting Xray\n| 5 - Fix WhatsApp Time\n| 6 - Install WordPress\n| 7 - Block All Speedtest Requests\n| 8 - XUI Bot (${RED}Multi-Server Support${NC})\n| 9 - Uninstall\n| 0 - Exit"
+    XUI_ASSISTANT_MENU "|1  - Copy Database to Destination VPS\n|2  - Send Gift to All Clients\n|3  - User Management\n|4 - Set Cronjob for Resetting Xray\n|5 - Fix WhatsApp Time\n|6 - Install WordPress\n|7 - Block All Speedtest Requests\n|8 - XUI Bot (${RED}Multi-Server Support${NC})\n|9  - XUI Managment\n|10 - Uninstall\n|11 - Exit"
 
     read -p "| Enter option number: " choice
     case $choice in
@@ -46,7 +46,8 @@ loader() {
         6) install_wordpress ;;
         7) block_speedtest_sites ;;
         8) xui_bot ;;
-        9) uninstall ;;
+        9) xui_managment ;;
+        10) uninstall ;;
         0) exit_program ;;
         *) echo -e "${RED}Invalid option. Try again.${NC}" ;;
     esac
@@ -97,6 +98,10 @@ xray_restart() {
 
 xui_bot() {
     python3 /root/xui-assistant/core/v2ray_bot.py
+}
+
+xui_managment(){
+    python3 /root/xui-assistant/core/mlxui.sh
 }
 
 uninstall() {
