@@ -101,7 +101,7 @@ xui_bot() {
 }
 
 xui_managment(){
-    python3 /root/xui-assistant/core/mlxui.sh
+    bash /root/xui-assistant/core/mlxui.sh
 }
 
 uninstall() {
