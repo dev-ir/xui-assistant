@@ -58,6 +58,7 @@ install_docker() {
         exit 1
     fi
 }
+
 install_panels() {
     read -p "How many panels do you want to install? (1-20): " panel_count
     if ! [[ "$panel_count" =~ ^[1-9]$|^1[0-9]$|^20$ ]]; then
@@ -65,29 +66,39 @@ install_panels() {
         return
     fi
     
-    base_panel_port=20000   # Base Panel Port (5 digits)
-    base_sub_port=21000     # Base Sub Port (5 digits)
-    base_inbound_port=22000 # Base Example Inbound Port (5 digits)
-    port_range=100          # Number of ports to allocate per panel (can be increased)
+    base_panel_port=2053   # Base Panel Port
+    base_sub_port=2096     # Base Sub Port
     
     declare -A panel_ports # Array to store panel names and their ports
     
     for ((i = 1; i <= panel_count; i++)); do
         panel_dir="3x-ui-$i"
-        panel_port_start=$((base_panel_port + (i - 1) * port_range))   # Start of Panel Port range
-        sub_port_start=$((base_sub_port + (i - 1) * port_range))       # Start of Sub Port range
-        inbound_port_start=$((base_inbound_port + (i - 1) * port_range)) # Start of Inbound Port range
+        panel_port=$((base_panel_port + (i - 1)))   # Increment Panel Port by 1 for each panel
+        sub_port=$((base_sub_port + (i - 1)))       # Increment Sub Port by 1 for each panel
         
-        # Calculate the end of the port ranges
-        panel_port_end=$((panel_port_start + port_range - 1))
-        sub_port_end=$((sub_port_start + port_range - 1))
-        inbound_port_end=$((inbound_port_start + port_range - 1))
-        
-        # Ensure ports are within the valid range (1-65535)
-        if [[ $panel_port_end -gt 65535 || $sub_port_end -gt 65535 || $inbound_port_end -gt 65535 ]]; then
-            echo "Error: Port range exceeds the maximum allowed port number (65535)."
-            return
-        fi
+        # Ask the user to input inbound ports
+        while true; do
+            read -p "Enter inbound ports for panel $i (comma-separated, e.g., 10000,10001,10002): " inbound_ports
+            if [[ -z "$inbound_ports" ]]; then
+                echo "Error: Inbound ports cannot be empty. Please try again."
+                continue
+            fi
+            
+            # Validate inbound ports
+            invalid_ports=()
+            IFS=',' read -r -a ports_array <<< "$inbound_ports"
+            for port in "${ports_array[@]}"; do
+                if ! [[ "$port" =~ ^[0-9]+$ ]] || [[ "$port" -lt 1 || "$port" -gt 65535 ]]; then
+                    invalid_ports+=("$port")
+                fi
+            done
+            
+            if [ ${#invalid_ports[@]} -eq 0 ]; then
+                break
+            else
+                echo "Error: The following ports are invalid: ${invalid_ports[*]}. Ports must be between 1 and 65535."
+            fi
+        done
         
         mkdir -p "$panel_dir"
         cd "$panel_dir" || exit
@@ -95,28 +106,45 @@ install_panels() {
         echo "Cloning repository for panel $i..."
         git clone https://github.com/MHSanaEi/3x-ui.git .
         
-        echo "Starting panel $i with port ranges:"
-        echo "Panel Ports: $panel_port_start-$panel_port_end"
-        echo "Sub Ports: $sub_port_start-$sub_port_end"
-        echo "Inbound Ports: $inbound_port_start-$inbound_port_end"
+        echo "Starting panel $i with the following ports:"
+        echo "Panel Port: $panel_port"
+        echo "Sub Port: $sub_port"
+        echo "Inbound Ports: $inbound_ports"
         
-        docker run -itd \
-        -e XRAY_VMESS_AEAD_FORCED=false \
-        -p "$panel_port_start-$panel_port_end:$panel_port_start-$panel_port_end" \
-        -p "$sub_port_start-$sub_port_end:$sub_port_start-$sub_port_end" \
-        -p "$inbound_port_start-$inbound_port_end:$inbound_port_start-$inbound_port_end" \
-        -v $(pwd)/db/:/etc/x-ui/ \
-        -v $(pwd)/cert/:/root/cert/ \
-        --restart=always \
-        --name "3x-ui-$i" \
-        ghcr.io/mhsanaei/3x-ui:latest
+        # Check if a container with the same name already exists
+        if docker ps -a --format "{{.Names}}" | grep -q "^3x-ui-$i$"; then
+            echo "A container with the name '3x-ui-$i' already exists. Removing it..."
+            docker stop "3x-ui-$i" > /dev/null 2>&1
+            docker rm "3x-ui-$i" > /dev/null 2>&1
+        fi
+        
+        # Prepare Docker command
+        docker_cmd="docker run -itd \
+            -e XRAY_VMESS_AEAD_FORCED=false \
+            -p $panel_port:2053 \
+            -p $sub_port:2096"
+        
+        # Add inbound ports to Docker command
+        for port in "${ports_array[@]}"; do
+            docker_cmd+=" -p $port:$port"
+        done
+        
+        docker_cmd+=" \
+            -v $(pwd)/db/:/etc/x-ui/ \
+            -v $(pwd)/cert/:/root/cert/ \
+            --restart=always \
+            --name 3x-ui-$i \
+            ghcr.io/mhsanaei/3x-ui:latest"
+        
+        # Run Docker command
+        eval "$docker_cmd"
         
         if [ $? -eq 0 ]; then
-            echo "Panel $i has been successfully installed with port ranges:"
-            echo "Panel Ports: $panel_port_start-$panel_port_end"
-            echo "Sub Ports: $sub_port_start-$sub_port_end"
-            echo "Inbound Ports: $inbound_port_start-$inbound_port_end"
-            panel_ports["3x-ui-$i"]="Panel Ports: $panel_port_start-$panel_port_end, Sub Ports: $sub_port_start-$sub_port_end, Inbound Ports: $inbound_port_start-$inbound_port_end"
+            echo "Panel $i has been successfully installed with the following ports:"
+            echo "Panel Port: $panel_port"
+            echo "Sub Port: $sub_port"
+            echo "Inbound Ports: $inbound_ports"
+            panel_ports["3x-ui-$i"]="Panel Port: $panel_port, Sub Port: $sub_port, Inbound Ports: $inbound_ports"
         else
             echo "Failed to install panel $i."
             # Clean up if the panel failed to install
@@ -127,7 +155,7 @@ install_panels() {
         cd ..
     done
     
-    # Display the list of installed panels and their port ranges
+    # Display the list of installed panels and their ports
     echo "===================="
     echo "Installed Panels:"
     echo "===================="
