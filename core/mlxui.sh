@@ -58,7 +58,6 @@ install_docker() {
         exit 1
     fi
 }
-
 install_panels() {
     read -p "How many panels do you want to install? (1-20): " panel_count
     if ! [[ "$panel_count" =~ ^[1-9]$|^1[0-9]$|^20$ ]]; then
@@ -66,29 +65,46 @@ install_panels() {
         return
     fi
     
-    base_panel_port=2053   # Base Panel Port
-    base_sub_port=2096     # Base Sub Port
-    base_inbound_port=8080 # Base Example Inbound Port
+    base_panel_port=20000   # Base Panel Port (5 digits)
+    base_sub_port=21000     # Base Sub Port (5 digits)
+    base_inbound_port=22000 # Base Example Inbound Port (5 digits)
+    port_range=100          # Number of ports to allocate per panel (can be increased)
+    
     declare -A panel_ports # Array to store panel names and their ports
     
     for ((i = 1; i <= panel_count; i++)); do
         panel_dir="3x-ui-$i"
-        panel_port=$((base_panel_port + (i - 1) * 10))   # Increment Panel Port by 10
-        sub_port=$((base_sub_port + (i - 1) * 10))       # Increment Sub Port by 10
-        inbound_port=$((base_inbound_port + (i - 1) * 10)) # Increment Inbound Port by 10
+        panel_port_start=$((base_panel_port + (i - 1) * port_range))   # Start of Panel Port range
+        sub_port_start=$((base_sub_port + (i - 1) * port_range))       # Start of Sub Port range
+        inbound_port_start=$((base_inbound_port + (i - 1) * port_range)) # Start of Inbound Port range
+        
+        # Calculate the end of the port ranges
+        panel_port_end=$((panel_port_start + port_range - 1))
+        sub_port_end=$((sub_port_start + port_range - 1))
+        inbound_port_end=$((inbound_port_start + port_range - 1))
+        
+        # Ensure ports are within the valid range (1-65535)
+        if [[ $panel_port_end -gt 65535 || $sub_port_end -gt 65535 || $inbound_port_end -gt 65535 ]]; then
+            echo "Error: Port range exceeds the maximum allowed port number (65535)."
+            return
+        fi
         
         mkdir -p "$panel_dir"
         cd "$panel_dir" || exit
         
         echo "Cloning repository for panel $i..."
-        git clone https://github.com/MHSanaei/3x-ui.git .
+        git clone https://github.com/MHSanaEi/3x-ui.git .
         
-        echo "Starting panel $i with ports: Panel Port=$panel_port, Sub Port=$sub_port, Inbound Port=$inbound_port..."
+        echo "Starting panel $i with port ranges:"
+        echo "Panel Ports: $panel_port_start-$panel_port_end"
+        echo "Sub Ports: $sub_port_start-$sub_port_end"
+        echo "Inbound Ports: $inbound_port_start-$inbound_port_end"
+        
         docker run -itd \
         -e XRAY_VMESS_AEAD_FORCED=false \
-        -p "$panel_port:2053" \
-        -p "$sub_port:2096" \
-        -p "$inbound_port:8080" \
+        -p "$panel_port_start-$panel_port_end:$panel_port_start-$panel_port_end" \
+        -p "$sub_port_start-$sub_port_end:$sub_port_start-$sub_port_end" \
+        -p "$inbound_port_start-$inbound_port_end:$inbound_port_start-$inbound_port_end" \
         -v $(pwd)/db/:/etc/x-ui/ \
         -v $(pwd)/cert/:/root/cert/ \
         --restart=always \
@@ -96,16 +112,22 @@ install_panels() {
         ghcr.io/mhsanaei/3x-ui:latest
         
         if [ $? -eq 0 ]; then
-            echo "Panel $i has been successfully installed with ports: Panel Port=$panel_port, Sub Port=$sub_port, Inbound Port=$inbound_port."
-            panel_ports["3x-ui-$i"]="Panel Port=$panel_port, Sub Port=$sub_port, Inbound Port=$inbound_port"
+            echo "Panel $i has been successfully installed with port ranges:"
+            echo "Panel Ports: $panel_port_start-$panel_port_end"
+            echo "Sub Ports: $sub_port_start-$sub_port_end"
+            echo "Inbound Ports: $inbound_port_start-$inbound_port_end"
+            panel_ports["3x-ui-$i"]="Panel Ports: $panel_port_start-$panel_port_end, Sub Ports: $sub_port_start-$sub_port_end, Inbound Ports: $inbound_port_start-$inbound_port_end"
         else
             echo "Failed to install panel $i."
+            # Clean up if the panel failed to install
+            cd ..
+            rm -rf "$panel_dir"
         fi
         
         cd ..
     done
     
-    # Display the list of installed panels and their ports
+    # Display the list of installed panels and their port ranges
     echo "===================="
     echo "Installed Panels:"
     echo "===================="
