@@ -1,4 +1,4 @@
-<h1 align=""/>⚡️ Welcome to XUI Assistant ⚡️</h1>
+hi<h1 align=""/>⚡️ Welcome to XUI Assistant ⚡️</h1>
 
 > **Disclaimer:** XUI Assistant: A Comprehensive Management Panel for XUI Subscribers
 >**Try XUI Assistant today and experience the difference!**
@@ -48,4 +48,4 @@ bash <(curl -Ls https://raw.githubusercontent.com/amirsadra0098/xui-assistant/ma
 
 ## 📧 Join Telegram Channel
 
-TG : t.me/sdr6tn
+TG : https://t.me/sdr6tn
