@@ -36,7 +36,7 @@ bash <(curl -Ls https://raw.githubusercontent.com/dev-ir/xui-assistant/master/in
 
 ## 🌍 Supported Languages
 - English
-- [🇮🇷 فارسی (Persian)](README.fa.md)
+- [🇮🇷 فارسی (Persian)](readme.fa.md)
 
 ## 🖼️ Preview
 <p align="left">
