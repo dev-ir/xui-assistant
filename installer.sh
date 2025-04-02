@@ -1,28 +1,40 @@
+#!/bin/bash
+
+# Color Definitions
 RED='\033[0;31m'
 GREEN='\033[0;32m'
-
 NC='\033[0m' # No Color
-#Remove Old version
-rm -rf /root/xui-assistant/
 
-# install git
-sudo apt install git -y
+# Configuration
+VERSION='2.3.1'
+INSTALL_DIR='/root/xui-assistant'
+BIN_PATH='/usr/local/bin/xui-assis'
+REPO_URL='https://github.com/dev-ir/xui-assistant.git'
 
-# clone from repo in xui-assistant directory
-git clone https://github.com/dev-ir/xui-assistant.git /root/xui-assistant/
+# Clean previous installation
+rm -rf "${INSTALL_DIR}"
 
-# Access Folder
-sudo chmod +x /root/xui-assistant/
-chmod +x /root/xui-assistant/menu.sh
+# Install dependencies
+if ! command -v git &> /dev/null; then
+    echo -e "${GREEN}Installing git...${NC}"
+    apt-get update && apt-get install -y git
+fi
 
+# Clone repository
+echo -e "${GREEN}Cloning repository...${NC}"
+git clone "${REPO_URL}" "${INSTALL_DIR}"
 
-sudo mv /root/xui-assistant/menu.sh /usr/local/bin/xui-assis
+# Set permissions
+chmod +x "${INSTALL_DIR}"
+chmod +x "${INSTALL_DIR}/menu.sh"
 
+# Install binary
+mv "${INSTALL_DIR}/menu.sh" "${BIN_PATH}"
+
+# Display success message
 clear
-echo "+-------------------------------------------------------------------------------------+"
-echo -e "|  Telegram Channel : ${RED}@DVHOST_CLOUD ${NC} |  YouTube : ${RED}youtube.com/@dvhost_cloud${NC} "
-echo "+-------------------------------------------------------------------------------------+"
-echo -e "| You can now permanently access the menu by typing: ${GREEN}xui-assis${NC}    |  Version : ${GREEN} 2.0${NC} "
-echo "+-------------------------------------------------------------------------------------+"
-
-# xui-assis
+echo "+------------------------------------------------------------------------+"
+echo -e "| Telegram Channel : ${RED}@DVHOST_CLOUD${NC} | YouTube : ${RED}youtube.com/@dvhost_cloud${NC} |"
+echo "+------------------------------------------------------------------------+"
+echo -e "| Now permanently access the menu by typing: ${GREEN}xui-assis${NC} | Version : ${GREEN}${VERSION}${NC} |"
+echo "+------------------------------------------------------------------------+"
