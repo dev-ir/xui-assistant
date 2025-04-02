@@ -1,51 +1,53 @@
-<h1 align=""/>⚡️ Welcome to XUI Assistant ⚡️</h1>
+# ⚡️ Welcome to XUI Assistant ⚡️
 
-> **Disclaimer:** XUI Assistant: A Comprehensive Management Panel for XUI Subscribers
->**Try XUI Assistant today and experience the difference!**
+> **Disclaimer:** XUI Assistant is a comprehensive management panel for XUI subscribers.
+> **Try XUI Assistant today and experience the difference!**
 
-## Install & Upgrade
+## 📥 Install & Upgrade
 
-```
+```bash
 bash <(curl -Ls https://raw.githubusercontent.com/dev-ir/xui-assistant/master/installer.sh)
 ```
-**Comprehensive User Management:**
 
-* **Add, edit, and delete users** with full control
-* **Set user access levels** for granular control over their activities
-* **Monitor user activities** to ensure system security and efficiency
-* **Set gift usage volume and expiry date** for each user
+## 🚀 Features
 
-**Strengthen System Security:**
+### 🔹 User & Admin Management
+- **Admin management** for better control
+- **User management bot** for traffic and date-based controls
+- **Gift flow/time allocation** to all users
 
-* **Configure security protocols** to protect your system from cyber threats
-* **Install security updates automatically** to keep your system up-to-date
-* **Perform regular data backups** to prevent data loss
+### 🔹 System & Security Management
+- **Transfer database to another server** for seamless migration
+- **Schedule Xray service restart** for maintenance
+- **Fix WhatsApp date/time issues** for better synchronization
+- **Block speed test websites** to prevent misuse
 
-**Powerful Resource Management:**
+### 🔹 Advanced Features & Add-ons
+- **Install WordPress alongside X-UI** for extended functionalities
+- **Install more X-UI panels** to expand capabilities
+- **Add subscription templates** for easier management
 
-* **Migrate databases between servers** for easy data movement
-* **Restart the Xray service** for troubleshooting and resolving issues
-* **Perform data backups** to protect your information
+### 🔹 Script & Program Management
+- **Uninstall this script** if needed
+- **Exit the program** safely
 
-**Powerful Bot Management:**
+## 🖥️ Supported Operating Systems
+- **Ubuntu 20+** (Recommended for best compatibility)
 
-
-**And much more!**
-
-
-
-## Languages
+## 🌍 Supported Languages
 - English
+- [🇮🇷 فارسی (Persian)](README.fa.md)
 
-## 🪚 Preview
+## 🖼️ Preview
 <p align="left">
-    <img width="100%" src="https://github.com/user-attachments/assets/f33ece63-c97c-40cb-9c6a-39265ef73ec5" alt="Image">
+    <img width="100%" src="https://github.com/user-attachments/assets/33c20ca7-7eb3-46c9-a69b-2b643ea8152d" alt="XUI Assistant Preview">
 </p>
 
-## 🙏 Support with Crypto 
-**We don't need financial support, only Star (⭐) is enough, thank you.**
-- USDT (TRC20): `TVUqVMoCEe5DVUoxmPg8MwmgcHvZLqLjr4`
+## 🙏 Support with Crypto
+**We don't need financial support, a simple Star (⭐) is enough. Thank you!**
 
-## 📧 Join Telegram Channel
+- **USDT (TRC20):** `TVUqVMoCEe5DVUoxmPg8MwmgcHvZLqLjr4`
 
-TG : https://t.me/+EpErnDsDPhw3ZThk
+## 📢 Join Our Telegram Channel
+📌 [Telegram Channel](https://t.me/+EpErnDsDPhw3ZThk)
+
