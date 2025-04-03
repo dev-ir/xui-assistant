@@ -73,7 +73,7 @@ xui_assis_user_management_bot() {
     python3 "${XUI_ASSISTANT_DIR}/core/v2ray_bot.py"
 }
 
-xui_assis_install_multi_panels() {
+xui_assis_install_panels() {
     bash "${XUI_ASSISTANT_DIR}/core/mlxui.sh"
 }
 
