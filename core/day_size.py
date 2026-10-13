@@ -7,6 +7,15 @@ DB_PATH = '/etc/x-ui/x-ui.db'
 def dvhost_connect_to_db():
     return sqlite3.connect(DB_PATH)
 
+def dvhost_parse_int(value, field):
+    """Accept integers and integer strings without truncating invalid values."""
+    if isinstance(value, bool) or not isinstance(value, (int, str)):
+        raise ValueError(f"Invalid integer for {field}: {value!r}")
+    try:
+        return int(value)
+    except ValueError:
+        raise ValueError(f"Invalid integer for {field}: {value!r}") from None
+
 def dvhost_convert_days_to_unix_millis(days):
     try:
         expiration_time_millis = (int(days) * 86400) * 1000
@@ -26,6 +35,9 @@ def dvhost_update_expiry_time(days):
         cursor.execute("SELECT id, expiry_time, total FROM client_traffics")
         client_traffics = cursor.fetchall()
         for client_id, expiry_time, total in client_traffics:
+            expiry_time = dvhost_parse_int(
+                expiry_time, f"client_traffics[{client_id}].expiry_time"
+            )
             if expiry_time > 0:
                 new_expiry_time = expiry_time + additional_time_millis
                 cursor.execute("UPDATE client_traffics SET expiry_time = ? WHERE id = ?", (new_expiry_time, client_id))
@@ -36,15 +48,21 @@ def dvhost_update_expiry_time(days):
             settings = json.loads(settings_json)
             if 'clients' in settings:
                 for client in settings['clients']:
-                    if client['enable'] and client['expiryTime'] > 0:
-                        client['expiryTime'] += additional_time_millis
+                    if client['enable']:
+                        expiry_time = dvhost_parse_int(
+                            client['expiryTime'],
+                            f"inbounds[{inbound_id}].clients[{client.get('email', '?')}].expiryTime"
+                        )
+                        if expiry_time > 0:
+                            client['expiryTime'] = expiry_time + additional_time_millis
                 new_settings_json = json.dumps(settings)
                 cursor.execute("UPDATE inbounds SET settings = ? WHERE id = ?", (new_settings_json, inbound_id))
 
         conn.commit()
         print("Expiry time and totalGB updated successfully.")
-    except sqlite3.Error as e:
-        print(f"An error occurred: {e}")
+    except (sqlite3.Error, ValueError, TypeError, KeyError, OverflowError) as e:
+        conn.rollback()
+        print(f"Update cancelled: {e}")
     finally:
         conn.close()
 
@@ -65,6 +83,9 @@ def dvhost_update_traffic():
         cursor.execute("SELECT id, total FROM client_traffics")
         client_traffics = cursor.fetchall()
         for client_id, total in client_traffics:
+            total = dvhost_parse_int(
+                total, f"client_traffics[{client_id}].total"
+            )
             if total > 0:
                 new_total = total + additional_bytes
                 cursor.execute("UPDATE client_traffics SET total = ? WHERE id = ?", (new_total, client_id))
@@ -77,16 +98,22 @@ def dvhost_update_traffic():
             settings = json.loads(settings_json)
             if 'clients' in settings:
                 for client in settings['clients']:
-                    if client['enable'] and client['totalGB'] > 0:
-                        client['totalGB'] += additional_bytes
+                    if client['enable']:
+                        total = dvhost_parse_int(
+                            client['totalGB'],
+                            f"inbounds[{inbound_id}].clients[{client.get('email', '?')}].totalGB"
+                        )
+                        if total > 0:
+                            client['totalGB'] = total + additional_bytes
 
                 new_settings_json = json.dumps(settings)
                 cursor.execute("UPDATE inbounds SET settings = ? WHERE id = ?", (new_settings_json, inbound_id))
 
         conn.commit()
         print("Traffic updated successfully.")
-    except sqlite3.Error as e:
-        print(f"An error occurred: {e}")
+    except (sqlite3.Error, ValueError, TypeError, KeyError, OverflowError) as e:
+        conn.rollback()
+        print(f"Update cancelled: {e}")
     finally:
         conn.close()
 
